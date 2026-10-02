@@ -1,0 +1,388 @@
+
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Agama Islam Interaktif Super</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            islamic: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              dark: '#082815',
+            },
+            gold: {
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+            }
+          },
+          animation: {
+            'bounce-short': 'bounce 0.6s ease-in-out 1',
+            'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+            'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+          },
+          keyframes: {
+            shake: {
+              '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+              '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+              '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+              '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
+            },
+            popIn: {
+              '0%': { opacity: '0', transform: 'scale(0.8)' },
+              '100%': { opacity: '1', transform: 'scale(1)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      background: radial-gradient(circle at top, #14532d 0%, #092d18 60%, #051a0e 100%);
+      min-height: 100vh;
+    }
+    
+    /* Islamic Geometric Pattern Backdrop Overlay */
+    .islamic-bg-pattern {
+      background-image: radial-gradient(rgba(250, 204, 21, 0.08) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .gold-gradient {
+      background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #ca8a04 100%);
+    }
+
+    .gold-gradient-btn {
+      background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+      color: #092d18;
+    }
+
+    .gold-gradient-btn:hover {
+      background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #eab308 100%);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #166534;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-slate-800 flex flex-col justify-between p-3 sm:p-6 min-h-screen islamic-bg-pattern relative">
+
+  <header class="max-w-3xl w-full mx-auto flex items-center justify-between py-2.5 px-4 bg-emerald-950/70 backdrop-blur-md rounded-2xl border border-emerald-500/30 text-white shadow-xl mb-4 z-10">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center text-emerald-950 font-black text-xl shadow-md border border-amber-200/50">
+        <i class="fa-solid fa-mosque"></i>
+      </div>
+      <div>
+        <h1 class="font-extrabold text-base sm:text-lg leading-tight text-gold-400 tracking-wide">Quiz Islam Interaktif</h1>
+        <p class="text-[11px] sm:text-xs text-emerald-200/90 font-medium">Uji & Asah Pengetahuan Keislaman</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Sound Toggle -->
+      <button id="soundToggleBtn" onclick="toggleSound()" class="w-10 h-10 rounded-xl bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 transition border border-emerald-700/50 shadow" title="Aktifkan/Matikan Suara">
+        <i id="soundIcon" class="fa-solid fa-volume-high text-base"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-3xl w-full mx-auto flex-1 flex flex-col justify-center relative z-10">
+
+    <!-- 1. START SCREEN -->
+    <section id="startScreen" class="glass-card rounded-3xl p-6 sm:p-10 border border-emerald-100 text-center relative overflow-hidden my-auto animate-pop-in">
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-emerald-200/40 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-amber-200/40 rounded-full blur-3xl"></div>
+
+      <div class="w-20 h-20 bg-emerald-100/90 text-emerald-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-4xl shadow-inner border border-emerald-300">
+        <i class="fa-solid fa-book-quran"></i>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-black text-emerald-950 mb-2">Selamat Datang di Quiz Islam</h2>
+      <p class="text-slate-600 text-xs sm:text-sm max-w-md mx-auto mb-6 leading-relaxed">
+        Uji wawasan Anda mengenai Al-Qur'an, Rukun Islam & Iman, Sejarah, serta Kisah Para Nabi melalui 15 soal pilihan ganda interaktif.
+      </p>
+
+      <!-- Player Input & Mode Selection -->
+      <div class="max-w-md mx-auto space-y-4 text-left mb-6">
+        <div>
+          <label for="playerName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nama Pemain</label>
+          <div class="relative">
+            <i class="fa-solid fa-user-gear absolute left-3.5 top-3.5 text-slate-400"></i>
+            <input type="text" id="playerName" placeholder="Masukkan nama Anda..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent text-slate-800 font-medium text-sm shadow-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mode Batas Waktu</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" onclick="setTimerMode(false)" id="modeRelax" class="py-2.5 px-3.5 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-sm">
+              <i class="fa-solid fa-mug-hot text-emerald-600"></i> Santai (Tanpa Waktu)
+            </button>
+            <button type="button" onclick="setTimerMode(true)" id="modeTimed" class="py-2.5 px-3.5 rounded-xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 hover:border-emerald-300 transition shadow-sm">
+              <i class="fa-solid fa-stopwatch text-amber-500"></i> Tantangan (15s / Soal)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highscore Badge -->
+      <div id="highScoreBadge" class="hidden max-w-md mx-auto bg-amber-50/80 border border-amber-200 rounded-xl p-3 mb-6 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-amber-900 text-xs sm:text-sm font-bold">
+          <i class="fa-solid fa-trophy text-amber-500 text-base"></i> Rekor Skor Terbaik:
+        </div>
+        <span id="highScoreVal" class="font-extrabold text-amber-950 text-sm sm:text-base">0 Poin</span>
+      </div>
+
+      <button onclick="startGame()" class="w-full max-w-md mx-auto py-4 px-8 gold-gradient-btn text-emerald-950 font-black text-base sm:text-lg rounded-2xl shadow-lg active:scale-98 transition flex items-center justify-center gap-3 border border-amber-300 cursor-pointer">
+        <span>MULAI KUIS SEKARANG</span>
+        <i class="fa-solid fa-play text-lg"></i>
+      </button>
+    </section>
+
+    <!-- 2. QUIZ GAME SCREEN -->
+    <section id="quizScreen" class="hidden glass-card rounded-3xl p-5 sm:p-8 border border-emerald-100 flex flex-col justify-between animate-pop-in">
+      
+      <!-- Top Info Bar -->
+      <div>
+        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-600 mb-2">
+          <span class="flex items-center gap-1.5 text-emerald-900 font-extrabold">
+            <i class="fa-solid fa-layer-group text-emerald-600"></i> Soal <span id="currentQNum">1</span> / <span id="totalQNum">15</span>
+          </span>
+
+          <div class="flex items-center gap-2">
+            <!-- Combo Badge -->
+            <div id="comboBadge" class="hidden bg-amber-500 text-emerald-950 text-xs font-black px-2.5 py-1 rounded-full animate-bounce">
+              <i class="fa-solid fa-fire"></i> <span id="comboCount">2</span>x Combo!
+            </div>
+
+            <span class="flex items-center gap-1.5 bg-emerald-100 text-emerald-900 py-1 px-3 rounded-full text-xs sm:text-sm font-extrabold border border-emerald-200">
+              <i class="fa-solid fa-star text-amber-500"></i> Skor: <span id="scoreDisplay" class="text-emerald-950">0</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-4 border border-slate-200/60">
+          <div id="progressBar" class="bg-gradient-to-r from-emerald-600 to-emerald-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+
+        <!-- Timer Bar -->
+        <div id="timerContainer" class="hidden mb-4">
+          <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
+            <span><i class="fa-regular fa-clock"></i> Sisa Waktu</span>
+            <span id="timerText" class="text-emerald-800 font-extrabold">15 Detik</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200/60">
+            <div id="timerBar" class="bg-amber-500 h-full w-full transition-all duration-1000 linear"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Tag & Lifelines Bar -->
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span id="categoryBadge" class="inline-block bg-emerald-800 text-gold-300 text-[11px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-lg shadow-sm border border-emerald-700">
+          Kategori
+        </span>
+
+        <!-- Lifelines / Bantuan -->
+        <div class="flex items-center gap-2">
+          <button id="lifeline5050" onclick="useLifeline5050()" class="py-1 px-2.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-lg border border-amber-300 transition flex items-center gap-1" title="Hilangkan 2 pilihan salah (1x pakai)">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> 50:50
+          </button>
+          <button id="lifelineHint" onclick="useLifelineHint()" class="py-1 px-2.5 bg-sky-100 hover:bg-sky-200 text-sky-900 font-bold text-xs rounded-lg border border-sky-300 transition flex items-center gap-1" title="Lihat Kata Kunci Petunjuk (1x pakai)">
+            <i class="fa-solid fa-lightbulb text-sky-600"></i> Hint
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Box -->
+      <div class="my-2 sm:my-3">
+        <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 sm:p-6 mb-4 shadow-sm relative">
+          <h3 id="questionText" class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed">
+            -- Loading Soal --
+          </h3>
+
+          <!-- Hint Message Box (Hidden by default) -->
+          <div id="hintBox" class="hidden mt-3 p-2.5 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900 font-semibold flex items-start gap-2">
+            <i class="fa-solid fa-circle-info text-sky-600 text-sm mt-0.5"></i>
+            <span id="hintText">Petunjuk akan ditampilkan di sini.</span>
+          </div>
+        </div>
+
+        <!-- Options Container -->
+        <div id="optionsContainer" class="grid grid-cols-1 gap-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Explanation Box (Shown after selection) -->
+      <div id="explanationBox" class="hidden mt-2 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-slate-800">
+        <div class="flex items-center gap-2 font-bold mb-1 text-amber-900">
+          <i class="fa-solid fa-book-open text-amber-600"></i> Pembahasan:
+        </div>
+        <p id="explanationText" class="leading-relaxed text-slate-700 font-medium"></p>
+      </div>
+
+      <!-- Footer Action -->
+      <div class="mt-5 flex justify-end">
+        <button id="nextBtn" onclick="nextQuestion()" disabled class="py-3 px-6 bg-slate-300 text-slate-500 font-extrabold text-xs sm:text-sm rounded-xl transition flex items-center gap-2 cursor-not-allowed">
+          <span>Soal Berikutnya</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. RESULT SCREEN -->
+    <section id="resultScreen" class="hidden glass-card rounded-3xl p-5 sm:p-8 border border-emerald-100 text-center my-auto animate-pop-in">
+      
+      <div id="resultHeader" class="mb-4">
+        <!-- Badge Icon -->
+        <div id="resultBadge" class="w-16 h-16 sm:w-20 sm:h-20 gold-gradient text-emerald-950 rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl sm:text-4xl shadow-lg border-2 border-amber-300 animate-bounce-short">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-black text-emerald-950 mb-1" id="resultGreeting">Masya Allah, Luar Biasa!</h2>
+        <p class="text-slate-600 text-xs sm:text-sm">Hasil Kuis Agama Islam untuk <span id="resultPlayerName" class="font-extrabold text-emerald-800">Pemain</span></p>
+      </div>
+
+      <!-- Digital Score Card / Certificate -->
+      <div id="certificateCard" class="bg-gradient-to-b from-emerald-900 to-emerald-950 text-white rounded-2xl p-5 sm:p-6 max-w-md mx-auto mb-5 shadow-2xl border-2 border-amber-400/60 relative overflow-hidden text-left">
+        <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-emerald-700/30 rounded-full blur-xl"></div>
+        <div class="absolute -left-8 -top-8 w-28 h-28 bg-amber-500/10 rounded-full blur-xl"></div>
+
+        <div class="flex items-center justify-between border-b border-emerald-800/80 pb-3 mb-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-award text-amber-400 text-xl"></i>
+            <span class="text-xs uppercase tracking-widest text-emerald-200 font-bold">Ringkasan Prestasi</span>
+          </div>
+          <span id="predikatBadge" class="bg-amber-400 text-emerald-950 font-black text-[10px] uppercase px-2 py-0.5 rounded-md">MUMTAZ</span>
+        </div>
+
+        <div class="text-center my-2">
+          <div class="text-[11px] uppercase tracking-widest text-emerald-300 font-bold mb-0.5">Total Skor Akhir</div>
+          <div id="finalScoreDisplay" class="text-4xl sm:text-5xl font-black text-gold-400 drop-shadow">0</div>
+        </div>
+
+        <!-- Rating Stars -->
+        <div id="starsRating" class="flex justify-center gap-2 text-2xl text-amber-400 my-2">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center border-t border-emerald-800/80 pt-3 mt-3 text-xs">
+          <div>
+            <span class="text-emerald-300 block text-[10px] uppercase font-bold">Benar</span>
+            <span id="correctCount" class="font-bold text-base text-emerald-100">0 / 15</span>
+          </div>
+          <div>
+            <span class="text-emerald-300 block text-[10px] uppercase font-bold">Akurasi</span>
+            <span id="accuracyDisplay" class="font-bold text-base text-emerald-100">0%</span>
+          </div>
+          <div>
+            <span class="text-emerald-300 block text-[10px] uppercase font-bold">Max Combo</span>
+            <span id="maxComboDisplay" class="font-bold text-base text-emerald-100">0x</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action & Review Tools -->
+      <div class="max-w-md mx-auto space-y-3 mb-5">
+        <div class="flex items-center gap-2">
+          <button onclick="copyCertificateSummary()" class="w-full py-2.5 px-3 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold text-xs rounded-xl border border-emerald-300 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-share-nodes"></i> Salin Ringkasan Hasil
+          </button>
+        </div>
+
+        <!-- Review Section Accordion -->
+        <button onclick="toggleReviewSection()" class="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl border border-slate-300 flex items-center justify-between text-xs sm:text-sm transition">
+          <span class="flex items-center gap-2"><i class="fa-solid fa-list-check text-emerald-700"></i> Lihat Pembahasan Soal</span>
+          <i id="reviewChevron" class="fa-solid fa-chevron-down text-slate-400"></i>
+        </button>
+
+        <!-- Detailed Review (Hidden by default) -->
+        <div id="reviewContainer" class="hidden text-left space-y-3 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+          <!-- Filter Buttons -->
+          <div class="flex gap-2 mb-2 pb-2 border-b border-slate-200">
+            <button onclick="filterReview('all')" id="filterAll" class="px-2.5 py-1 rounded-lg bg-emerald-800 text-white font-bold text-[11px]">Semua Soal</button>
+            <button onclick="filterReview('wrong')" id="filterWrong" class="px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 font-bold text-[11px]">Hanya Salah</button>
+            <button onclick="filterReview('correct')" id="filterCorrect" class="px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 font-bold text-[11px]">Hanya Benar</button>
+          </div>
+
+          <div id="reviewList" class="max-h-60 overflow-y-auto custom-scrollbar space-y-2.5">
+            <!-- Dynamic Insertion -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="max-w-md mx-auto grid grid-cols-2 gap-3">
+        <button onclick="restartQuiz()" class="py-3 px-4 gold-gradient-btn font-black text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition flex items-center justify-center gap-2 border border-amber-300 cursor-pointer">
+          <i class="fa-solid fa-rotate-right"></i> Main Lagi
+        </button>
+        <button onclick="backToHome()" class="py-3 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-house"></i> Menu Utama
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="max-w-3xl w-full mx-auto text-center py-3 text-[11px] sm:text-xs text-emerald-200/80 font-medium z-10">
+    <p>© Quiz Agama Islam Interaktif • Mengasah Ilmu, Memperkuat Faith</p>
+  </footer>
+
+  <!-- Notification Toast Message -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2 border border-slate-700">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Notifikasi</span>
+  </div>
+
+  <script>
+    // 15 DATA SOAL KUIS LENGKAP & KATEGORIKAL
+    const quizDa
